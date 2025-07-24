@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sagar Ranjan</title>
+
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Link to Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+
+    <style>
+      /* Original Site Styles */
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #222; /* Changed to dark background for menu visibility */
+        color: #d32f2f;
+        user-select: none;
+        overflow: hidden; /* To prevent scrollbars from the menu */
+      }
+      .vertical-text {
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+      }
+
+      /* Radial Menu Styles */
+      * {
+        box-sizing: border-box;
+      }
+
+      /* New Trackpad Area Style */
+      #trackpad-area {
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.02);
+        border: 2px dashed rgba(255, 255, 255, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.4);
+        cursor: pointer;
+        transition: background-color 0.3s, border-color 0.3s;
+        text-align: center;
+        padding: 2rem;
+      }
+      #trackpad-area:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+
+      /* Wheel Container - Reduced Size */
+      .wheel {
+        --x: 0px;
+        --y: 0px;
+        position: absolute;
+        top: var(--y);
+        left: var(--x);
+        width: 400px; /* Reduced from 500px */
+        height: 400px; /* Reduced from 500px */
+        transform: translate(-50%, -50%);
+        transform-origin: 0% 0%;
+        z-index: 100; /* Ensure it's on top */
+        pointer-events: none; /* Allow clicks to pass through the wheel itself */
+      }
+
+      /* Arc Styles */
+      .arc {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 50%;
+        height: 50%;
+        transform-origin: 0% 100%;
+        background-image: radial-gradient(
+          circle at 0% 100%,
+          transparent,
+          transparent 29.5%,
+          var(--color-border) 30%,
+          var(--color-border) 30.5%,
+          var(--color) 31%,
+          var(--color) 50%,
+          var(--color-border) 50.25%,
+          var(--color-border) 51.5%,
+          transparent 51.75%,
+          transparent
+        );
+        transition-property: transform, opacity;
+        transition-duration: 0.3s;
+        transition-timing-function: cubic-bezier(0.4, -0.4, 0.7, -0.3);
+        -webkit-clip-path: polygon(0 0, 0 99%, 99% 0);
+        clip-path: polygon(0 0, 0 99%, 99% 0);
+        opacity: 0;
+        transform: scale(0) rotate(var(--rotation));
+      }
+
+      /* Icon inside the arc - Reduced Size */
+      .arc i {
+        position: absolute;
+        top: 40%;
+        left: 15%;
+        font-size: 1.5rem; /* Reduced from 2rem */
+        transform: rotate(calc(var(--rotation) * -1));
+        color: rgba(255, 255, 255, 0.8);
+        transition: color 0.3s;
+      }
+
+      /* Wheel active state */
+      .wheel.on .arc {
+        opacity: 0.8;
+        transform: scale(1) rotate(var(--rotation)) !important;
+        transition-timing-function: cubic-bezier(0, 0.5, 0.5, 1.5);
+      }
+
+      /* === Compiled CSS from Sass @for loop === */
+      /* --- Item 1 --- */
+      .wheel[data-chosen="1"] .arc:nth-child(1) {
+        opacity: 1;
+        transform: scale(1.1) rotate(var(--rotation)) !important;
+        filter: brightness(150%);
+      }
+      .wheel[data-chosen="1"] .arc:nth-child(1) i {
+        color: rgba(0, 0, 0, 0.5);
+      }
+      .arc:nth-child(1) {
+        --rotation: -22.5deg;
+        --color: hsl(0deg, 36%, 60%);
+        --color-border: hsl(0deg, 36%, 40%);
+        transition-delay: 0.015s;
+      }
+      /* --- Item 2 --- */
+      .wheel[data-chosen="2"] .arc:nth-child(2) {
+        opacity: 1;
+        transform: scale(1.1) rotate(var(--rotation)) !important;
+        filter: brightness(150%);
+      }
+      .wheel[data-chosen="2"] .arc:nth-child(2) i {
+        color: rgba(0, 0, 0, 0.5);
+      }
+      .arc:nth-child(2) {
+        --rotation: 22.5deg;
+        --color: hsl(45deg, 36%, 60%);
+        --color-border: hsl(45deg, 36%, 40%);
+        transition-delay: 0s;
+      }
+      /* --- Item 3 --- */
+      .wheel[data-chosen="3"] .arc:nth-child(3) {
+        opacity: 1;
+        transform: scale(1.1) rotate(var(--rotation)) !important;
+        filter: brightness(150%);
+      }
+      .wheel[data-chosen="3"] .arc:nth-child(3) i {
+        color: rgba(0, 0, 0, 0.5);
+      }
+      .arc:nth-child(3) {
+        --rotation: 67.5deg;
+        --color: hsl(90deg, 36%, 60%);
+        --color-border: hsl(90deg, 36%, 40%);
+        transition-delay: 0.015s;
+      }
+      /* --- Item 4 --- */
+      .wheel[data-chosen="4"] .arc:nth-child(4) {
+        opacity: 1;
+        transform: scale(1.1) rotate(var(--rotation)) !important;
+        filter: brightness(150%);
+      }
+      .wheel[data-chosen="4"] .arc:nth-child(4) i {
+        color: rgba(0, 0, 0, 0.5);
+      }
+      .arc:nth-child(4) {
+        --rotation: 112.5deg;
+        --color: hsl(135deg, 36%, 60%);
+        --color-border: hsl(135deg, 36%, 40%);
+        transition-delay: 0s;
+      }
+      /* --- Item 5 --- */
+      .wheel[data-chosen="5"] .arc:nth-child(5) {
+        opacity: 1;
+        transform: scale(1.1) rotate(var(--rotation)) !important;
+        filter: brightness(150%);
+      }
+      .wheel[data-chosen="5"] .arc:nth-child(5) i {
+        color: rgba(0, 0, 0, 0.5);
+      }
+      .arc:nth-child(5) {
+        --rotation: 157.5deg;
+        --color: hsl(180deg, 36%, 60%);
+        --color-border: hsl(180deg, 36%, 40%);
+        transition-delay: 0.015s;
+      }
+      /* --- Item 6 --- */
+      .wheel[data-chosen="6"] .arc:nth-child(6) {
+        opacity: 1;
+        transform: scale(1.1) rotate(var(--rotation)) !important;
+        filter: brightness(150%);
+      }
+      .wheel[data-chosen="6"] .arc:nth-child(6) i {
+        color: rgba(0, 0, 0, 0.5);
+      }
+      .arc:nth-child(6) {
+        --rotation: 202.5deg;
+        --color: hsl(225deg, 36%, 60%);
+        --color-border: hsl(225deg, 36%, 40%);
+        transition-delay: 0s;
+      }
+      /* --- Item 7 --- */
+      .wheel[data-chosen="7"] .arc:nth-child(7) {
+        opacity: 1;
+        transform: scale(1.1) rotate(var(--rotation)) !important;
+        filter: brightness(150%);
+      }
+      .wheel[data-chosen="7"] .arc:nth-child(7) i {
+        color: rgba(0, 0, 0, 0.5);
+      }
+      .arc:nth-child(7) {
+        --rotation: 247.5deg;
+        --color: hsl(270deg, 36%, 60%);
+        --color-border: hsl(270deg, 36%, 40%);
+        transition-delay: 0.015s;
+      }
+      /* --- Item 8 --- */
+      .wheel[data-chosen="8"] .arc:nth-child(8) {
+        opacity: 1;
+        transform: scale(1.1) rotate(var(--rotation)) !important;
+        filter: brightness(150%);
+      }
+      .wheel[data-chosen="8"] .arc:nth-child(8) i {
+        color: rgba(0, 0, 0, 0.5);
+      }
+      .arc:nth-child(8) {
+        --rotation: 292.5deg;
+        --color: hsl(315deg, 36%, 60%);
+        --color-border: hsl(315deg, 36%, 40%);
+        transition-delay: 0s;
+      }
+    </style>
+  </head>
+  <body class="relative min-h-screen overflow-x-hidden">
+    <!-- Profile Picture Floating Bottom Left -->
+    <div
+      class="absolute bottom-8 left-8 z-50 flex items-center justify-center"
+      style="
+        background: rgba(34, 34, 34, 0.7);
+        border-radius: 50%;
+        box-shadow: 0 4px 24px #0006;
+        width: 150px;
+        height: 150px;
+      "
+    >
+      <img
+        src="https://media.licdn.com/dms/image/v2/D4D03AQEj2mftWmI2Zw/profile-displayphoto-crop_800_800/B4DZgaK2THHwAU-/0/1752785710294?e=1756339200&v=beta&t=JHSch9hxTBC3M5-pDA0qligkkmpyQaFKUx51yjB_3qo"
+        alt="Sagar Ranjan"
+        style="
+          width: 125px;
+          height: 125px;
+          object-fit: cover;
+          border-radius: 50%;
+          border: 3px solid #d32f2f;
+        "
+      />
+    </div>
+    <div class="container mx-auto p-8 md:p-12">
+      <header class="flex justify-between items-start mb-4">
+        <div>
+          <h1
+            class="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-none"
+            style="color: #f8d7d7"
+          >
+            Stalking<br />
+            Sagar Ranjan
+          </h1>
+        </div>
+        <div class="flex items-center gap-4">
+          <span
+            class="text-5xl md:text-7xl lg:text-8xl font-black"
+            style="color: #f8d7d7"
+            >2025</span
+          >
+          <div class="w-6 h-6 md:w-8 md:h-8 bg-red-700"></div>
+        </div>
+      </header>
+      <p
+        class="text-sm uppercase tracking-widest mb-12 max-w-md"
+        style="color: #f8d7d7"
+      >
+        invasive scrape of his entire online presence.
+      </p>
+    </div>
+
+    <!-- Centered Trackpad Section -->
+    <section
+      class="flex flex-col items-center justify-center min-h-[40vh] relative z-10"
+    >
+      <div id="trackpad-area">Click & Drag Here</div>
+    </section>
+
+    <aside
+      class="absolute top-0 right-0 h-full flex items-center pr-4 md:pr-6 pointer-events-none"
+    >
+      <div
+        class="vertical-text text-sm uppercase tracking-widest text-red-700/80"
+      >
+        Bad Choices Since 2014
+      </div>
+    </aside>
+
+    <!-- Radial Menu HTML -->
+    <div class="wheel">
+      <div class="arc"><i class="fas fa-paw"></i></div>
+      <div class="arc"><i class="fas fa-user"></i></div>
+      <div class="arc"><i class="fas fa-code"></i></div>
+      <div class="arc"><i class="fas fa-wifi"></i></div>
+      <div class="arc"><i class="fas fa-skull-crossbones"></i></div>
+      <div class="arc"><i class="fas fa-gamepad"></i></div>
+      <div class="arc"><i class="fas fa-moon"></i></div>
+      <div class="arc"><i class="fas fa-camera-retro"></i></div>
+    </div>
+    <!-- Text Card for Selection -->
+    <div
+      id="radial-card"
+      style="
+        display: none;
+        position: absolute;
+        left: 50%;
+        top: 60%;
+        transform: translate(-50%, 0);
+        min-width: 220px;
+        background: #222;
+        color: #fff;
+        border-radius: 1rem;
+        box-shadow: 0 4px 24px #0008;
+        padding: 1.2rem 1.5rem;
+        z-index: 200;
+        text-align: center;
+        font-size: 1.1rem;
+        pointer-events: none;
+      "
+    ></div>
+
+    <!-- Radial Menu Script -->
+    <script>
+      // Radial Menu Script - With Text Card
+      const wheel = document.querySelector(".wheel");
+      const trackpad = document.getElementById("trackpad-area");
+      const card = document.getElementById("radial-card");
+
+      let showing = false;
+      let anchorX = 0,
+        anchorY = 0;
+      const minDistance = 70;
+
+      // Card text for each icon
+      const cardTexts = [
+        "",
+        "Paw: He'll Steal your cat.",
+        "Contact: ranjanisback007@gmail.com",
+        "Code: C/C++ (Competitive Coding), Python (Video-generation), HTML CSS JAVASCRIPT (Designing)",
+        "Wifi-pass: chillyaar -> chillmaar",
+        "Dislike: Doing something with no direction",
+        "Game-fav: WWE Raw VS Smackdown",
+        "Sleeps: Around 3:00 AM",
+        "Pictures: Likes it Candid & Weird",
+      ];
+
+      // Start interaction only on the trackpad
+      trackpad.addEventListener("mousedown", onInteractionStart);
+      trackpad.addEventListener("touchstart", (e) =>
+        onInteractionStart(e.touches[0])
+      );
+
+      function onInteractionStart(e) {
+        showing = true;
+        anchorX = e.clientX;
+        anchorY = e.clientY;
+        wheel.style.setProperty("--x", `${anchorX}px`);
+        wheel.style.setProperty("--y", `${anchorY}px`);
+        wheel.classList.add("on");
+        card.style.display = "none";
+        // Listen for movement and release on the whole document
+        document.addEventListener("mousemove", onInteractionMove);
+        document.addEventListener("touchmove", onInteractionMove);
+        document.addEventListener("mouseup", onInteractionEnd);
+        document.addEventListener("touchend", onInteractionEnd);
+      }
+
+      function onInteractionMove(e) {
+        if (!showing) return;
+        // Support both mouse and touch events
+        const point = e.touches ? e.touches[0] : e;
+        const dx = point.clientX - anchorX;
+        const dy = point.clientY - anchorY;
+        const distance = Math.hypot(dx, dy);
+        let index = 0;
+        if (distance >= minDistance) {
+          let angle = Math.atan2(dy, dx) + 0.625 * Math.PI;
+          angle = (angle + Math.PI * 2) % (Math.PI * 2); // Normalize angle to [0, 2π)
+          index = Math.floor((angle / (Math.PI * 2)) * 8) + 1;
+        }
+        wheel.setAttribute("data-chosen", index);
+        // Show card if a valid icon is selected
+        if (index > 0 && index < cardTexts.length) {
+          card.textContent = cardTexts[index];
+          card.style.display = "block";
+        } else {
+          card.style.display = "none";
+        }
+      }
+
+      function onInteractionEnd() {
+        if (!showing) return;
+        showing = false;
+        wheel.setAttribute("data-chosen", "0");
+        wheel.classList.remove("on");
+        card.style.display = "none";
+        // Clean up listeners
+        document.removeEventListener("mousemove", onInteractionMove);
+        document.removeEventListener("touchmove", onInteractionMove);
+        document.removeEventListener("mouseup", onInteractionEnd);
+        document.removeEventListener("touchend", onInteractionEnd);
+      }
+
+      // Prevent context menu on the whole page
+      document.body.addEventListener("contextmenu", (e) => e.preventDefault());
+    </script>
+  </body>
+</html>
